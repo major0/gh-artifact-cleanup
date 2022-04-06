@@ -1,0 +1,43 @@
+name: Artifact Cleanup
+
+on:
+  schedule:
+  - cron: "0 0 */1 * *" # once a day
+  workflow_dispatch:
+    inputs:
+      newer:
+        description: "Limit check to runs that are newer than this many days ago."
+        required: false
+        type: string
+      older:
+        description: "Limit check to runs that are older than this many days ago."
+        required: false
+        type: string
+      debug:
+        description: "Enable script debugging."
+        required: false
+        type: boolean
+        default: false
+      dry-run:
+        description: "Do not change the repository."
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+    - id: debug
+      if: ${{ github.event.inputs.debug }}
+      run: |
+        printf '##\n# Environ\n%s\n' "$(env | grep '^GITHUB_' | sort)"
+        printf '##\n# Event\n%s\n' "$(cat "${GITHUB_EVENT_PATH}")"
+
+    - uses: major0/gh-artifact-cleanup@master
+      with:
+        token: ${{ secrets.AUTOMATION }}
+        newer: ${{ github.event.name != 'schedule' && github.event.inputs.newer || 30 }}
+        older: ${{ github.event.name != 'schedule' && github.event.inputs.older || 7 }}
+        dry-run: ${{ github.event.name !=  'schedule' && github.event.inputs.dry-run || false }}
+        debug: ${{ github.event.name != 'schedule' && github.event.inputs.debug || false }}

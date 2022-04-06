@@ -1,0 +1,48 @@
+name: "GitHub Orphaned Artifact Cleaner"
+author: "Mark Ferrell"
+description: "Cleanup orphaned artifacts from GitHub Actions"
+
+branding:
+  icon: delete
+  color: yellow
+
+inputs:
+  token:
+    description: "Authentication token to use when cleaning repository."
+    default: ${{ github.token }}
+    required: true
+  older:
+    description: "Limit work to artifacts that are older than the specified number of days old. Default 'now'"
+    required: false
+  newer:
+    description: "Limit to artifacts that are newer than the specified number of days."
+    required: false
+  dry-run:
+    description: "Do not make any repository changes, only report what would be done."
+    required: true
+    default: false
+  debug:
+    description: "Enable script execution tracing."
+    required: true
+    default: false
+
+runs:
+  using: composite
+  steps:
+  - id: checkout
+    uses: actions/checkout@v3
+    with:
+      fetch-depth: 0
+      token: ${{ inputs.token }}
+
+  - id: cleanup
+    shell: bash
+    env:
+      GITHUB_TOKEN: ${{ inputs.token }}
+    run: |
+      set --
+      test -z "${{ inputs.newer }}" || set -- "${@}" --newer "${{ inputs.newer }}"
+      test -z "${{ inputs.older }}" || set -- "${@}" --older "${{ inputs.older }}"
+      test "${{ inputs.dry-run }}" = 'false' || set -- "${@}" --dry-run
+      test "${{ inputs.debug }}" = 'false' || set -- "${@}" --trace
+      "${{ github.action_path }}/gh-artifact-cleanup.sh" "${@}"
