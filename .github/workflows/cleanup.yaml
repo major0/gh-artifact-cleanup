@@ -2,7 +2,7 @@ name: Artifact Cleanup
 
 on:
   schedule:
-  - cron: "0 0 */1 * *" # once a day
+  - cron: "0 0 */7 * *" # once a week
   workflow_dispatch:
     inputs:
       newer:
@@ -38,6 +38,6 @@ jobs:
       with:
         token: ${{ secrets.AUTOMATION }}
         newer: ${{ github.event.name == 'schedule' && 30 || github.event.inputs.newer }}
-        older: ${{ github.event.name == 'schedule' && 7 || github.event.inputs.older }}
+        older: ${{ github.event.name == 'schedule' && 14 || github.event.inputs.older }}
         dry-run: ${{ github.event.name ==  'schedule' && false || github.event.inputs.dry-run }}
         debug: ${{ github.event.name == 'schedule' && false || github.event.inputs.debug }}
