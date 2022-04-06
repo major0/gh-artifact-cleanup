@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - debug:
-      if: secrets.ACTIONS_STEP_DEBUG != '' && secrets.ACTIONS_STEP_DEBUG
+      if: ${{ secrets.ACTIONS_STEP_DEBUG }} != '' && ${{ secrets.ACTIONS_STEP_DEBUG }}
       run: |
         printf '##\n# Environ\n%s\n\n' "$(env | grep '^GITHUB_' | sort)"
         printf '##\n# GitHub Event\n%s\n\n' "$(cat "${GITHUB_EVENT_PATH}")"
