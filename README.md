@@ -24,7 +24,7 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
-    - uses: major0/gh-artifact-cleanup@master
+    - uses: major0/gh-artifact-cleanup@v1
       token: ${{ secrets.TOKEN }}
       newer: 30      # optional
       older: 7       # optional
