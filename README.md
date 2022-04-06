@@ -6,7 +6,7 @@ Orphaned artifacts are artifacts which belong to a [Git][] ref which is
 no-longer the tip of any branch. Generally this is a result of a developer
 making updates to a [pull-request][], though it also includes artifacts for any
 pull-requests which have been accepted into the mainline of development. This
-action assumes that any reports/logs/artifacts for a rebased [pull-request][]
+action assumes that any report/log artifacts for a rebased [pull-request][]
 can be discarded, and any artifacts for a merged [pull-request][] will be
 replaced by new workflow runs when the mainline (master/main/trunc/etc) is
 updated.
