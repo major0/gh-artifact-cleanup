@@ -3,8 +3,8 @@ author: "Mark Ferrell"
 description: "Cleanup orphaned artifacts from GitHub Actions"
 
 branding:
-  icon: delete
-  color: yellow
+  icon: package
+  color: blue
 
 inputs:
   token:
