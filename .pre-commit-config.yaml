@@ -35,11 +35,7 @@ repos:
   rev: 1.0.5
   hooks:
   - id: shell-lint
-- repo: https://github.com/zricethezav/gitleaks
-  rev: v8.5.3
-  hooks:
-  - id: gitleaks
-- repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
-  rev: v0.1.0
-  hooks:
-  - id: dockerfilelint
+#- repo: https://github.com/zricethezav/gitleaks
+#  rev: v8.5.3
+#  hooks:
+#  - id: gitleaks
