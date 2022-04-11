@@ -24,6 +24,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  actions: write
+
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -34,9 +37,9 @@ jobs:
         printf '##\n# Environ\n%s\n' "$(env | grep '^GITHUB_' | sort)"
         printf '##\n# Event\n%s\n' "$(cat "${GITHUB_EVENT_PATH}")"
 
-    - uses: major0/gh-artifact-cleanup@master
+    - uses: major0/gh-artifact-cleanup@v1
       with:
-        token: ${{ secrets.AUTOMATION }}
+        token: ${{ github.token }}
         newer: ${{ github.event.name == 'schedule' && 30 || github.event.inputs.newer }}
         older: ${{ github.event.name == 'schedule' && 14 || github.event.inputs.older }}
         dry-run: ${{ github.event.name ==  'schedule' && false || github.event.inputs.dry-run }}
